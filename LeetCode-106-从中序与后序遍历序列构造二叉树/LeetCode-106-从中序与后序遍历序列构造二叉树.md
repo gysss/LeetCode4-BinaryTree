@@ -23,9 +23,11 @@ class Solution:
         """
         if not inorder:
             return None
-        root = TreeNode(postorder[-1])
-        idx = inorder.index(postorder[-1])
-        root.left = self.buildTree(inorder[:idx], postorder[:idx])
-        root.right = self.buildTree(inorder[idx+1:], postorder[idx:-1])
+        root = TreeNode(postorder.pop())
+        idx = inorder.index(root.val)
+        
+        # 先右后左
+        root.right = self.buildTree(inorder[idx+1:], postorder)
+        root.left = self.buildTree(inorder[:idx], postorder)
         return root
 ```
