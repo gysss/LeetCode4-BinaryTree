@@ -12,3 +12,43 @@
 *   输入: root = [3,5,1,6,2,0,8,null,null,7,4], p = 5, q = 4
 输出: 5
 解释: 节点 5 和节点 4 的最近公共祖先是节点 5。因为根据定义最近公共祖先节点可以为节点本身。
+
+### Python 代码
+* 思路：从根结点找到通往节点p的路径，再找到通往q的路径，比较两个路径，第一个相同的值即为公共祖先
+
+```python
+# Definition for a binary tree node.
+# class TreeNode(object):
+#     def __init__(self, x):
+#         self.val = x
+#         self.left = None
+#         self.right = None
+
+class Solution(object):
+    def lowestCommonAncestor(self, root, p, q):
+        """
+        :type root: TreeNode
+        :type p: TreeNode
+        :type q: TreeNode
+        :rtype: TreeNode
+        """
+        def find_path(root, path, node):
+            if not root:
+                return False
+            path.append(root)
+            if root == node:
+                return True
+            if (root.left and find_path(root.left, path, node)) or (root.right and find_path(root.right, path, node)):
+                return True
+            path.pop()
+            return False
+        path_p, path_q = [], []
+        if not find_path(root, path_p, p) or not find_path(root, path_q, q):
+            return -1
+        i = 0
+        while i<len(path_p) and i<len(path_q):
+            if path_p[i] != path_q[i]:
+                break
+            i+=1
+        return path_p[i-1]
+```
